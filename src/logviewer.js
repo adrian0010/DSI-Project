@@ -41,10 +41,42 @@ function parseLogs(event) {
                 logTableBody.appendChild(row);
             }
         });
+
+        applyFilters();
     };
 
     reader.readAsText(file);
 }
 
+// Aply regex filters to the table
+function applyFilters() {
+    const timestampFilter = new RegExp(document.getElementById('timestampFilter').value, 'i');
+    const applicationFilter = new RegExp(document.getElementById('applicationFilter').value, 'i');
+    const ContextFilter = new RegExp(document.getElementById('ContextFilter').value, 'i');
+    const levelFilter = new RegExp(document.getElementById('levelFilter').value, 'i');
+    const messageFilter = new RegExp(document.getElementById('messageFilter').value, 'i');
+
+    const rows = document.querySelectorAll('#logTable tbody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const [timestamp, application, Context, level, message] = Array.from(cells).map(cell => cell.textContent);
+
+        if (
+            timestampFilter.test(timestamp) &&
+            applicationFilter.test(application) &&
+            ContextFilter.test(Context) &&
+            levelFilter.test(level) &&
+            messageFilter.test(message)
+        ) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
 // Event listener for file input
 document.getElementById('logFileInput').addEventListener('change', parseLogs);
+
+['timestampFilter', 'applicationFilter', 'ContextFilter', 'levelFilter', 'messageFilter'].forEach(id => {
+    document.getElementById(id).addEventListener('input', applyFilters);
+});     
