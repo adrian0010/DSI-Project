@@ -13,7 +13,7 @@ function parseLogs(event) {
 
     reader.onload = function () {
         const logLines = reader.result.split(/\r?\n/);
-
+        
         document.getElementById('logTable').style.display = 'table';
 
 
@@ -23,6 +23,14 @@ function parseLogs(event) {
                 const [_, timestamp, context, subContext, level, message] = match;
 
                 const row = document.createElement('tr');
+
+                if (level === 'WARN') {
+                    row.style.color = 'blue';
+                } else if (level === 'ERROR') {
+                    row.style.color = 'red';
+                } else if (level === 'FATAL') {
+                    row.style.backgroundColor = 'red';
+                }
 
                 [timestamp, context, subContext, level, message].forEach(text => {
                     const cell = document.createElement('td');
