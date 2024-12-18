@@ -29,7 +29,8 @@
                 "mechatroner.rainbow-csv", // CSV coloring extension
                 "ms-python.pylint", // Python linter
                 "lextudio.restructuredtext",  // Sphinx and reStructuredText extension
-                "njpwerner.autodocstring" // autoDocstring extension for docstring generation
+                "njpwerner.autodocstring", // autoDocstring extension for docstring generation
+                "ms-vscode.live-server", // Live server extension
             ]
         }
     },
