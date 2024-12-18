@@ -14,6 +14,9 @@ function parseLogs(event) {
     reader.onload = function () {
         const logLines = reader.result.split(/\r?\n/);
 
+        document.getElementById('logTable').style.display = 'table';
+
+
         logLines.forEach(line => {
             const match = cm4SlogdRegExp.exec(line);
             if (match) {
