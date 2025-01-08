@@ -13,39 +13,75 @@ function parseLogs(event) {
 
     reader.onload = function () {
         const logLines = reader.result.split(/\r?\n/);
+        let bootCycleCount = 0;
+        let currentBootCycleRows = [];
         
         document.getElementById('logTable').style.display = 'table';
 
-
-        logLines.forEach(line => {
+        logLines.forEach((line, index) => {
             const match = cm4SlogdRegExp.exec(line);
             if (match) {
                 const [_, timestamp, context, subContext, level, message] = match;
 
-                const row = document.createElement('tr');
-
-                if (level === 'WARN') {
-                    row.style.color = 'blue';
-                } else if (level === 'ERROR') {
-                    row.style.color = 'red';
-                } else if (level === 'FATAL') {
-                    row.style.backgroundColor = 'red';
+                // Check for new boot cycle
+                if (message.includes('Ignition state: true') && context.includes('DSVI')) {
+                    // If we have previous boot cycle data, add it to table
+                    if (currentBootCycleRows.length > 0) {
+                        addBootCycleToTable(logTableBody, bootCycleCount, currentBootCycleRows);
+                    }
+                    bootCycleCount++;
+                    currentBootCycleRows = [];
                 }
 
-                [timestamp, context, subContext, level, message].forEach(text => {
-                    const cell = document.createElement('td');
-                    cell.textContent = text;
-                    row.appendChild(cell);
-                });
-
-                logTableBody.appendChild(row);
+                // Create row data
+                const rowData = {
+                    timestamp,
+                    context,
+                    subContext,
+                    level,
+                    message
+                };
+                
+                currentBootCycleRows.push(rowData);
             }
         });
-
-        applyFilters();
+        
+        // Add last boot cycle if exists
+        if (currentBootCycleRows.length > 0) {
+            addBootCycleToTable(logTableBody, bootCycleCount, currentBootCycleRows);
+            }
     };
 
     reader.readAsText(file);
+}
+
+function addBootCycleToTable(tableBody, cycleNumber, rows) {
+    // Create boot cycle header row
+    const headerRow = document.createElement('tr');
+    headerRow.className = 'boot-cycle-header';
+    headerRow.setAttribute('data-cycle', cycleNumber);
+    headerRow.innerHTML = `
+        <td class="boot-cycle-cell">
+            <span class="toggle-icon">▼</span>
+            #${cycleNumber}
+        </td>
+        <td colspan="4">${rows[0].timestamp}</td>
+    `;
+    tableBody.appendChild(headerRow);
+    
+    // Add all rows for this boot cycle
+    rows.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.className = `cycle-${cycleNumber}-row`;
+        tr.innerHTML = `
+            <td>${row.timestamp}</td>
+            <td>${row.context}</td>
+            <td>${row.subContext}</td>
+            <td>${row.level}</td>
+            <td>${row.message}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
 }
 
 // Aply regex filters to the table
