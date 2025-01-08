@@ -63,7 +63,7 @@ function addBootCycleToTable(tableBody, cycleNumber, rows) {
     headerRow.innerHTML = `
         <td class="boot-cycle-cell">
             <span class="toggle-icon">▼</span>
-            #${cycleNumber}
+            Boot Cycle #${cycleNumber}
         </td>
         <td colspan="4">${rows[0].timestamp}</td>
     `;
@@ -116,3 +116,20 @@ document.getElementById('logFileInput').addEventListener('change', parseLogs);
 ['timestampFilter', 'applicationFilter', 'ContextFilter', 'levelFilter', 'messageFilter'].forEach(id => {
     document.getElementById(id).addEventListener('input', applyFilters);
 });     
+
+// Add boot cycle toggle functionality
+document.addEventListener('click', function(e) {
+    const header = e.target.closest('.boot-cycle-header');
+    if (header) {
+        const cycleNumber = header.getAttribute('data-cycle');
+        const rows = document.querySelectorAll(`.cycle-${cycleNumber}-row`);
+        const icon = header.querySelector('.toggle-icon');
+       
+        header.classList.toggle('collapsed');
+        icon.style.transform = header.classList.contains('collapsed') ? 'rotate(-90deg)' : '';
+       
+        rows.forEach(row => {
+            row.style.display = header.classList.contains('collapsed') ? 'none' : '';
+        });
+    }
+});
