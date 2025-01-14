@@ -144,3 +144,24 @@ document.addEventListener('click', function(e) {
         });
     }
 });
+
+//Function to export JSON files
+function exportFilters() {
+    const filters = {
+        timestampFilter: document.getElementById('timestampFilter').value,
+        applicationFilter: document.getElementById('applicationFilter').value,
+        ContextFilter: document.getElementById('ContextFilter').value,
+        levelFilter: document.getElementById('levelFilter').value,
+        messageFilter: document.getElementById('messageFilter').value,
+    };
+
+    const blob = new Blob([JSON.stringify(filters, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'filters.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+document.getElementById('exportButton').addEventListener('click', exportFilters);
+

@@ -44,12 +44,21 @@
         }
         tbody tr:nth-child(even) {
             background-color: #b3b3b3; 
+        }
+        .filter-controls {
+            position:fixed;
+            top: 20px;  
+            right: 20px;
         }  
     </style>
 </head>
 <body>
     <h1>Log Viewer</h1>
     <input type="file" id="logFileInput" accept=".txt,.log">
+    <div class="filter-controls">
+        <button type="button" id="exportButton">Export Filters</button>
+    </div>
+    
     <table id="logTable">
         <thead>
             <tr>
