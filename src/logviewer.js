@@ -80,6 +80,17 @@ function addBootCycleToTable(tableBody, cycleNumber, rows) {
             <td>${row.level}</td>
             <td>${row.message}</td>
         `;
+        switch(row.level) {
+            case 'WARN':
+                tr.style.color = 'blue';
+                break;
+            case 'ERROR':
+                tr.style.color = 'red';
+                break;
+            case 'FATAL':
+                tr.style.backgroundColor = 'red';
+                break;
+        }
         tableBody.appendChild(tr);
     });
 }
