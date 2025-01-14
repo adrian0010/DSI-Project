@@ -165,3 +165,33 @@ function exportFilters() {
 }
 document.getElementById('exportButton').addEventListener('click', exportFilters);
 
+//Function to import filters from JSON files
+function importFilters() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+ 
+    input.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const filters = JSON.parse(e.target.result);
+                    document.getElementById('timestampFilter').value = filters.timestampFilter || '';
+                    document.getElementById('applicationFilter').value = filters.applicationFilter || '';
+                    document.getElementById('ContextFilter').value = filters.ContextFilter || '';
+                    document.getElementById('levelFilter').value = filters.levelFilter || '';
+                    document.getElementById('messageFilter').value = filters.messageFilter || '';
+                    applyFilters();
+                } catch (error) {
+                    alert('JSON file not valid!!!');
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+ 
+    input.click();
+}
+document.getElementById('importButton').addEventListener('click', importFilters);
