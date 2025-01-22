@@ -195,3 +195,19 @@ function importFilters() {
     input.click();
 }
 document.getElementById('importButton').addEventListener('click', importFilters);
+
+document.addEventListener('DOMContentLoaded', function() {
+    var stylesheet = document.getElementById('themeStylesheet');
+    var currentTheme = localStorage.getItem('theme') || 'styles/light.css';
+    stylesheet.setAttribute('href', currentTheme);
+
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        if (stylesheet.getAttribute('href') === 'styles/light.css') {
+            stylesheet.setAttribute('href', 'styles/dark.css');
+            localStorage.setItem('theme', 'styles/dark.css');
+        } else {
+            stylesheet.setAttribute('href', 'styles/light.css');
+            localStorage.setItem('theme', 'styles/light.css');
+        }
+    });
+});

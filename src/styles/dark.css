@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    display: none;
+}
+
+table, th, td {
+    border: 1px solid #404040;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #2d2d2d;
+}
+
+.boot-cycle-header {
+    background-color: #333333;
+    cursor: pointer;
+}
+
+.toggle-icon {
+    display: inline-block;
+    margin-right: 8px;
+    transition: transform 0.2s;
+}
+
+.boot-cycle-cell {
+    font-weight: bold;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #262626;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #1f1f1f;
+}
+
+.filter-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    color: #e0e0e0;
+}
