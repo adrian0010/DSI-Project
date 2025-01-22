@@ -13,6 +13,7 @@
         <button type="button" id="themeToggle">🌓</button>
         <button type="button" id="exportButton">Export Filters</button>
         <button type="button" id="importButton">Import Filters</button>
+        <button id="generatePieChartButton">Generate Pie Chart</button>        
     </div>
     
     <table id="logTable">
@@ -34,6 +35,9 @@
         </thead>
         <tbody></tbody>
     </table>
+    <canvas id="pieChart" width="400" height="400" style="display: none;"></canvas>
+    
     <script src="logviewer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
