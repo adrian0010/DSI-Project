@@ -276,6 +276,8 @@ function generatePieChart() {
         }
     });
 
+    const backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+
     // Wait for the chart to be rendered
     setTimeout(() => {
         const newTab = window.open();
@@ -288,7 +290,7 @@ function generatePieChart() {
                 <title>Log Lines by Application</title>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             </head>
-            <body>
+            <body style="background-color: ${backgroundColor};">
                 <canvas id="newPieChart" width="400" height="400"></canvas>
                 <script>
                     const ctx = document.getElementById('newPieChart').getContext('2d');
@@ -336,4 +338,144 @@ function generatePieChart() {
         `);
     }, 1000);
 }
-document.getElementById('generatePieChartButton').addEventListener('click', generatePieChart);
+document.getElementById('generateBarChartButton').addEventListener('click', generateBarChart);
+
+function generateBarChart() {
+    const logTableBody = document.getElementById('logTable').querySelector('tbody');
+    const rows = logTableBody.querySelectorAll('tr');
+    const applicationCounts = {};
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length > 1) {
+            const application = cells[1].textContent;
+            if (!/\d{4}-\d{2}-\d{2}/.test(application)) { // Exclude rows with dates
+                if (applicationCounts[application]) {
+                    applicationCounts[application]++;
+                } else {
+                    applicationCounts[application] = 1;
+                }
+            }
+        }
+    });
+
+    // Sort applicationCounts in descending order
+    const sortedApplications = Object.entries(applicationCounts).sort((a, b) => b[1] - a[1]);
+    const sortedLabels = sortedApplications.map(entry => entry[0]);
+    const sortedData = sortedApplications.map(entry => entry[1]);
+
+    const ctx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: sortedLabels,
+            datasets: [{
+                label: 'Log Lines by Application',
+                data: sortedData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Log Lines by Application'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+
+    setTimeout(() => {
+        const newTab = window.open();
+        newTab.document.write(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Log Lines by Application</title>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            </head>
+            <body style="background-color: ${backgroundColor};">
+                <canvas id="newBarChart" width="400" height="400"></canvas>
+                <script>
+                    const ctx = document.getElementById('newBarChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ${JSON.stringify(sortedLabels)},
+                            datasets: [{
+                                label: 'Log Lines by Application',
+                                data: ${JSON.stringify(sortedData)},
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Log Lines by Application'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </body>
+            </html>
+        `);
+    }, 1000);
+}
