@@ -10,7 +10,7 @@ git clone https://github.com/adrian0010/DSI-Project.git
 ```
 or download the files from the github page.
 
-<img src="/images/Screenshot-github-download.png" alt="image" width="50%" height="auto">
+<img src="https://raw.githubusercontent.com/adrian0010/DSI-Project/refs/heads/main/images/Screenshot-github-download.png" alt="image" width="50%" height="auto">
 
 To run the application all you need to do is to open the [index.html](/src/index.html) file using a browser.
 
