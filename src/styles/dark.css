@@ -54,3 +54,23 @@ tbody tr:nth-child(even) {
     right: 20px;
     color: #e0e0e0;
 }
+.filter-controls button {
+    background-color: #333333;
+    color: #e0e0e0;   
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+.filter-controls button:hover {
+    background-color: #262626;
+}
+#logFileInput {
+    background-color: #333333;
+    color: #e0e0e0;   
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+#logFileInput:hover {
+    background-color: #262626;
+}
