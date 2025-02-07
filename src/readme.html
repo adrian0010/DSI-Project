@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <link id="themeStylesheet" rel="stylesheet" href="styles/light.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div id="readmeContent"></div>
+    <script>
+        fetch('https://raw.githubusercontent.com/adrian0010/DSI-Project/refs/heads/main/readme.md')
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('readmeContent').innerHTML = marked.parse(text);
+            })
+            .catch(error => console.error('Error fetching README:', error));
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var stylesheet = document.getElementById('themeStylesheet');
+            var currentTheme = localStorage.getItem('theme') || 'styles/light.css';
+            stylesheet.setAttribute('href', currentTheme);
+        });
+    </script>
+</body>
+</html>
